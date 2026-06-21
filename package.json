@@ -1,0 +1,23 @@
+{
+  "name": "redirect-shopee",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5222",
+    "build": "next build",
+    "start": "next start -p 5222",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.6",
+    "typescript": "^5.8.3"
+  }
+}
