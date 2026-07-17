@@ -137,29 +137,23 @@ curl -X POST https://redirect.clubepromos.com.br/api/links \
 
 `shopee_url` ainda é aceito como alias de `url`.
 
-## Deploy com PM2
+## Deploy (VPS produção)
+
+Servidor: PM2 app `redirect-shopee` em `/var/www/RedirecionadorShopee`  
+Domínio: https://redirect.clubepromos.com.br
 
 ```bash
+ssh vps
+cd /var/www/RedirecionadorShopee
+git pull origin main
+# Confira .env.local: BASE_URL, ADMIN_TOKEN, REDIRECT_API_KEY
+npm install
 npm run build
-
-# ecosystem.config.js (crie na raiz do projeto):
-# module.exports = {
-#   apps: [{
-#     name: 'redirect-shopee',
-#     script: 'node_modules/next/dist/bin/next',
-#     args: 'start -p 5222',
-#     env: {
-#       NODE_ENV: 'production',
-#       BASE_URL: 'https://redirect.clubepromos.com.br'
-#     }
-#   }]
-# };
-
-pm2 start ecosystem.config.js
+pm2 restart redirect-shopee
 pm2 save
 ```
 
-Exponha via Cloudflare Tunnel ou reverse proxy apontando para a porta 5222.
+Nginx faz proxy da porta 5222. Variáveis sensíveis ficam só no `.env.local` do servidor (não no git).
 
 ## Fluxo de redirect
 
