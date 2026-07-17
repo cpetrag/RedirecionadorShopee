@@ -92,12 +92,43 @@ Alias aceito para compatibilidade com o admin: `shopee_url` como sinônimo de `u
   "redirect_url": "https://seu-dominio.com/r/aB3xY9k2",
   "title": "landing.exemplo.com",
   "destination_url": "https://landing.exemplo.com/oferta",
-  "existing": false
+  "existing": false,
+  "active": true,
+  "clicks": { "real": 0, "total": 0, "bots": 0, "in_app": 0 }
 }
 ```
 
 - `destination_url` espelha o valor gravado (coluna `shopee_url`).
 - Manter `shopee_url` no payload do admin atual para não quebrar a UI; a API v1 usa `destination_url`.
+- Links criados via API **aparecem no painel admin** (mesma tabela `links`) com cliques e status, iguais aos criados pelo formulário.
+
+### Consultar link / estatísticas
+
+`GET /api/v1/redirects/:slug`  
+Mesma autenticação Bearer.
+
+Resposta `200`:
+
+```json
+{
+  "slug": "aB3xY9k2",
+  "redirect_url": "https://seu-dominio.com/r/aB3xY9k2",
+  "title": "landing.exemplo.com",
+  "destination_url": "https://landing.exemplo.com/oferta",
+  "active": true,
+  "created_at": "...",
+  "clicks": {
+    "real": 12,
+    "total": 15,
+    "bots": 3,
+    "in_app": 8,
+    "by_platform": { "android": 5, "ios": 3, "desktop": 4 }
+  }
+}
+```
+
+- `404` se slug não existir.
+- No admin: lista “Links cadastrados” e Relatórios já exibem cliques; nenhum filtro especial por origem (API vs painel).
 
 ### Erros
 

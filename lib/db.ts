@@ -194,6 +194,13 @@ export function getLinkBySlug(slug: string): Link | undefined {
     .get(slug) as Link | undefined;
 }
 
+/** Busca por slug independente de active (API / admin). */
+export function findLinkBySlug(slug: string): Link | undefined {
+  return getDb()
+    .prepare('SELECT * FROM links WHERE slug = ?')
+    .get(slug) as Link | undefined;
+}
+
 export function createLink(data: {
   slug: string;
   shopee_url: string;

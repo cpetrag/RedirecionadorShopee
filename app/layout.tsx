@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Redirect Shopee',
-  description: 'Redirecionador de links de afiliado Shopee',
+  title: 'Redirect — Clube Promos',
+  description:
+    'Redirecionador de links https (landings, afiliados, lojas) — redirect.clubepromos.com.br',
 };
 
 export default function RootLayout({

@@ -6,6 +6,15 @@ import CreatedLinkModal from '@/components/admin/CreatedLinkModal';
 import type { LinkRow, ParsedSubId } from '@/lib/admin-types';
 import { normalizeShopeeUrlForCompare } from '@/lib/shopee-url';
 
+function isLikelyShopeeHost(url: string): boolean {
+  try {
+    const host = new URL(url.trim()).hostname.toLowerCase();
+    return host === 'shopee.com.br' || host.endsWith('.shopee.com.br');
+  } catch {
+    return false;
+  }
+}
+
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -113,6 +122,14 @@ export default function LinksManager() {
     setError('');
     setResolveHint('');
     setSubIds([]);
+
+    if (!isLikelyShopeeHost(shopeeUrl)) {
+      setResolveHint(
+        'URL não é Shopee — preencha o título se quiser (opcional; senão usamos o hostname).'
+      );
+      return;
+    }
+
     setResolving(true);
 
     try {
@@ -149,8 +166,11 @@ export default function LinksManager() {
     let payloadSubIds = subIds;
     let payloadTitle = title.trim();
 
-    // Pré-visualiza metadados no formulário (o servidor também processa automaticamente)
-    if (shopeeUrl.trim() && (!payloadSubIds.length || !payloadTitle)) {
+    // Auto-análise só para Shopee (outras URLs: title opcional no servidor)
+    if (
+      isLikelyShopeeHost(trimmedUrl) &&
+      (!payloadSubIds.length || !payloadTitle)
+    ) {
       try {
         setResolveHint('Processando URL…');
         const data = await resolveUrl(shopeeUrl);
@@ -158,13 +178,14 @@ export default function LinksManager() {
         if (data.product_name && !payloadTitle) payloadTitle = data.product_name;
         applyResolveData(data);
       } catch (err) {
-        setSubmitting(false);
-        setError(err instanceof Error ? err.message : 'Erro ao processar URL');
-        return;
+        console.warn('[links] resolve pré-submit falhou:', err);
+        setResolveHint(
+          'Não foi possível analisar a URL Shopee — o servidor tentará de novo ao salvar.'
+        );
       }
     }
 
-    const body: Record<string, unknown> = { shopee_url: shopeeUrl.trim() };
+    const body: Record<string, unknown> = { url: trimmedUrl };
     if (slug.trim()) body.slug = slug.trim();
     if (payloadSubIds.length) body.sub_ids = payloadSubIds;
     if (payloadTitle) body.title = payloadTitle;
@@ -225,7 +246,10 @@ export default function LinksManager() {
 
       <div className="admin-page-header">
         <h1>Links</h1>
-        <p>Cadastre URLs de afiliado Shopee e copie o link para Stories/bio.</p>
+        <p>
+          Cadastre qualquer URL https (landings, lojas, afiliados) e copie o
+          redirect. Links criados pela API também aparecem aqui com cliques.
+        </p>
       </div>
 
       <div className="admin-stats">
@@ -254,14 +278,14 @@ export default function LinksManager() {
         )}
         <form onSubmit={handleSubmit}>
           <div className="admin-field">
-            <label htmlFor="shopee_url">URL de afiliado Shopee *</label>
+            <label htmlFor="destination_url">URL de destino *</label>
             <div style={{ display: 'flex', gap: 8 }}>
               <input
-                id="shopee_url"
+                id="destination_url"
                 type="url"
                 value={shopeeUrl}
                 onChange={(e) => setShopeeUrl(e.target.value)}
-                placeholder="https://s.shopee.com.br/18CNPX3x4"
+                placeholder="https://landing.exemplo.com/oferta"
                 required
                 style={{ flex: 1 }}
               />
@@ -275,9 +299,9 @@ export default function LinksManager() {
               </button>
             </div>
             <p className="admin-field-hint">
-              Cole o link curto da Shopee e clique <strong>Criar link</strong> — o
-              sistema processa automaticamente subIds e nome do produto.
-              A URL cadastrada <strong>não será alterada</strong>.
+              Qualquer https público (landing, loja, etc.). Em URLs Shopee,{' '}
+              <strong>Analisar URL</strong> extrai subIds e nome do produto.
+              Título é opcional — se vazio, usamos o hostname.
             </p>
           </div>
 
@@ -290,12 +314,12 @@ export default function LinksManager() {
 
           <div className="admin-form-grid">
             <div className="admin-field">
-              <label htmlFor="title">Título / Produto</label>
+              <label htmlFor="title">Título (opcional)</label>
               <input
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Preenchido ao analisar URL"
+                placeholder="Hostname se vazio; Shopee tenta auto-fill"
               />
             </div>
             <div className="admin-field">

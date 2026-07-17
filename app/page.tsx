@@ -9,14 +9,15 @@ export default function Home() {
         color: '#333',
       }}
     >
-      <h1 style={{ color: '#ee4d2d' }}>Redirect Shopee</h1>
+      <h1 style={{ color: '#1a1a1a' }}>Redirect</h1>
       <p>
-        Serviço de redirecionamento de links de afiliado para uso em Stories e
-        bio do Instagram.
+        Serviço de redirecionamento de links (landings, afiliados, lojas) para
+        Stories, bio e integrações via API.
       </p>
       <p style={{ fontSize: 14, color: '#666' }}>
-        Links ativos ficam em <code>/r/[slug]</code>. Gestão via{' '}
-        <a href="/admin" style={{ color: '#ee4d2d' }}>
+        Links ativos: <code>/r/[slug]</code>. API:{' '}
+        <code>/api/v1/redirects</code>. Gestão via{' '}
+        <a href="/admin" style={{ color: '#1a1a1a' }}>
           painel admin
         </a>
         .

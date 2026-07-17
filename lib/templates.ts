@@ -11,12 +11,12 @@ export function htmlAndroid(intentUrl: string, fallbackUrl: string): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Abrindo na Shopee…</title>
+  <title>Abrindo…</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #ee4d2d;
+      background: #1a1a1a;
       color: #fff;
       min-height: 100dvh;
       display: flex;
@@ -43,7 +43,7 @@ export function htmlAndroid(intentUrl: string, fallbackUrl: string): string {
       margin-top: 28px;
       padding: 14px 32px;
       background: #fff;
-      color: #ee4d2d;
+      color: #1a1a1a;
       font-size: 1rem;
       font-weight: 600;
       text-decoration: none;
@@ -54,9 +54,9 @@ export function htmlAndroid(intentUrl: string, fallbackUrl: string): string {
 </head>
 <body>
   <div class="spinner" aria-hidden="true"></div>
-  <h1>Abrindo na Shopee…</h1>
+  <h1>Abrindo…</h1>
   <p>Aguarde enquanto redirecionamos você.</p>
-  <a class="btn" href="${escapedIntent}">Abrir na Shopee</a>
+  <a class="btn" href="${escapedIntent}">Abrir link</a>
   <p class="hint">Toque em <strong>CONTINUAR</strong> se aparecer um aviso.</p>
   <script>
     (function () {
@@ -77,20 +77,20 @@ export function htmlAndroid(intentUrl: string, fallbackUrl: string): string {
  * Página intermediária para Instagram iOS.
  * Não há intent:// no iOS — instruímos o usuário a abrir no Safari.
  */
-export function htmlIOS(shopeeUrl: string): string {
-  const escapedUrl = escapeHtml(shopeeUrl);
+export function htmlIOS(destinationUrl: string): string {
+  const escapedUrl = escapeHtml(destinationUrl);
 
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Continuar para Shopee</title>
+  <title>Continuar</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #ee4d2d;
+      background: #1a1a1a;
       color: #fff;
       min-height: 100dvh;
       display: flex;
@@ -107,7 +107,7 @@ export function htmlIOS(shopeeUrl: string): string {
       margin-top: 28px;
       padding: 16px 36px;
       background: #fff;
-      color: #ee4d2d;
+      color: #1a1a1a;
       font-size: 1.1rem;
       font-weight: 600;
       text-decoration: none;
@@ -117,9 +117,9 @@ export function htmlIOS(shopeeUrl: string): string {
   </style>
 </head>
 <body>
-  <h1>Continuar para Shopee</h1>
-  <p>Toque no botão abaixo para seguir ao produto.</p>
-  <a class="btn" href="${escapedUrl}">Continuar pra Shopee</a>
+  <h1>Continuar</h1>
+  <p>Toque no botão abaixo para seguir ao destino.</p>
+  <a class="btn" href="${escapedUrl}">Abrir link</a>
   <p class="hint">
     Para abrir direto no app: toque em <strong>⋮ / Aa</strong> no topo
     e escolha <strong>Abrir no navegador</strong>.
