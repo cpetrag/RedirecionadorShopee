@@ -16,6 +16,9 @@
 .env.local
 .env*.local
 
+# brainstorm / local agent sessions
+.superpowers/
+
 # misc
 .DS_Store
 *.pem
